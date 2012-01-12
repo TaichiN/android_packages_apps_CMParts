@@ -200,6 +200,7 @@
         <item>Estilo clásico</item>
         <item>Estilo renovado</item>
         <item>Estilo Holo</item>
+        <item>Estilo Skank</item>
     </string-array>
 
     <string-array name="pref_in_call_style_entries">

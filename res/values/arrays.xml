@@ -347,7 +347,7 @@
         <item>20 (default)</item>
         <item>22</item>
         <item>24</item>
-        <item>26</item>
+        <item>26</item>Skank
     </string-array>
 
     <string-array name="values_light_levels_dim" translatable="false">
@@ -553,12 +553,14 @@
         <item>Bubble style</item>
         <item>Revamped style</item>
         <item>Holo style</item>
+        <item>Skank style</item>
     </string-array>
 
     <string-array name="pref_ringlock_style_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="pref_in_call_style_entries">
