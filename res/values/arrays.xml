@@ -347,7 +347,7 @@
         <item>20 (default)</item>
         <item>22</item>
         <item>24</item>
-        <item>26</item>Skank
+        <item>26</item>
     </string-array>
 
     <string-array name="values_light_levels_dim" translatable="false">
