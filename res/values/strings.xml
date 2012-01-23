@@ -9,7 +9,8 @@
     <string name="application_settings_summary_head">Application moving, install location, communication filtering</string>
     <string name="display_settings_title_head">Display</string>
     <string name="display_settings_title_subhead">Display settings</string>
-    <string name="display_settings_summary_head">Display animations, rotation, timeouts</string>
+    <string name="display_settings_summary_head">Display backlight, animations, rotation</string>
+    <string name="display_settings_summary_head_nobacklight">Display animations, rotation</string>
     <string name="input_settings_title_head">Input</string>
     <string name="input_settings_title_subhead">Input settings</string>
     <string name="input_settings_summary_head">Input behavior, buttons, haptic feedback</string>
@@ -261,6 +262,10 @@
     <string name="pref_lockscreen_always_battery_summary">Display battery status on the lockscreen at all times</string>
     <string name="pref_lockscreen_widgets_layout_title">Widget layout</string>
     <string name="pref_lockscreen_widgets_layout_summary">Toggle clock, date, carrier, status layout</string>
+    <string name="pref_lockscreen_widget_layout_entry_default">Default</string>
+    <string name="pref_lockscreen_widget_layout_entry_hidden">Hidden</string>
+    <string name="pref_lockscreen_widget_layout_entry_centered">Centered</string>
+    <string name="pref_lockscreen_widget_layout_entry_right">Right</string>
     <string name="pref_lockscreen_music_controls_title">Lockscreen music controls</string>
     <string name="pref_lockscreen_music_controls_summary">Display music controls on the lockscreen</string>
     <string name="pref_lockscreen_now_playing_title">Display song name</string>
