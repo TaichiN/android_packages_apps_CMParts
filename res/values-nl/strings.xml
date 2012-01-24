@@ -493,6 +493,9 @@
     <string name="sound_camera_shutter_disable_summary_off">Geluid van camerasluiter afspelen</string>
     <string name="sound_camera_shutter_disable_warning_title">Let op: mogelijk illegaal!</string>
     <string name="sound_camera_shutter_disable_warning">Het uitschakelen van het camerasluitergeluid is illegaal in sommige gebieden. Weet u het zeker?</string>
+    <string name="sound_camera_focus_mute_title">Stil focussen van camera</string>
+    <string name="sound_camera_focus_mute_summary_on">Focusgeluid wordt niet afgespeeld</string>
+    <string name="sound_camera_focus_mute_summary_off">Focusgeluid wordt wel afgespeeld</string>
 
     <string name="sound_note_title">Let op</string>
     <string name="sound_note_summary">Onderstaande instellingen worden alleen toegepast als een headset is aangesloten</string>
