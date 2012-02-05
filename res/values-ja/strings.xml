@@ -658,6 +658,9 @@
     <string name="sound_lock_volume_keys_summary">誤って音量キーを押した時にサイレントモードが解除されないようにする</string>
     <string name="sound_default_volume_media_title">デフォルトメディア音量</string>
     <string name="sound_default_volume_media_summary">音量キーで着呼音量のかわりにメディア音量を制御するようにする</string>
+    <string name="sound_volume_key_beeps_title">ボリュームキーとビープ音</string>
+    <string name="sound_volume_key_beeps_summary_off">ボリュームキーを押して音量を変更しようとした時にビープ音を出さない</string>
+    <string name="sound_volume_key_beeps_summary_on">ボリュームキーを押して音量を変更しようとした時にビープ音を出す</string>
     <string name="sound_camera_shutter_disable_title">カメラのシャッター音を消す</string>
     <string name="sound_camera_shutter_disable_summary_on">シャッター音は再生されません</string>
     <string name="sound_camera_shutter_disable_summary_off">シャッター音は再生されます</string>
