@@ -61,6 +61,7 @@ public class SoundActivity extends PreferenceActivity implements OnPreferenceCha
     private static final String LOCK_VOLUME_KEYS = "lock-volume-keys";
 
     private static final String DEFAULT_VOLUME_MEDIA = "default-volume-media";
+
     private static final String VOLUME_KEY_BEEPS = "volume-key-beeps";
 
     private static final String RINGS_SPEAKER = "ring-speaker";
