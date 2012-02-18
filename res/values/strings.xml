@@ -341,7 +341,7 @@
     <string name="ringlock_style_entry_bubbles">Bubble style</string>
     <string name="ringlock_style_entry_revamped">Revamped style</string>
     <string name="ringlock_style_entry_holo">Holo style</string>
-    <string name="ringlock_style_entry_skank">Skank style</string>
+    <string name="ringlock_style_entry_blade">Blade style</string>
     <string name="pref_in_call_style_title">Incoming call style</string>
     <string name="pref_in_call_style_summary">Choose the style of the incoming calls accept/reject widget</string>
     <string name="incall_style_entry_tabs">Sliding Tab</string>
@@ -464,6 +464,14 @@
     <!-- Performance Settings : 16bpp Alpha -->
     <string name="pref_use_16bpp_alpha_title">Use 16bit transparency</string>
     <string name="pref_use_16bpp_alpha_summary">Using 16bit transparency can improve scrolling performance, but may cause visual artifacts (requires reboot)</string>
+
+    <!-- Performance Settings : Scrolling Cache -->
+    <string name="pref_scrollingcache_title">Scrolling cache</string>
+    <string name="pref_scrollingcache_summary">Scrolling cache may improve scrolling performance at the cost of memory</string>
+    <string name="pref_scrollingcache_force_enable">Force enable</string>
+    <string name="pref_scrollingcache_default_enable">Default enable</string>
+    <string name="pref_scrollingcache_default_disable">Default disable</string>
+    <string name="pref_scrollingcache_force_disable">Force disable</string>
 
     <!-- Performance Settings : Purgeable Assets -->
     <string name="pref_purgeable_assets_title">Allow purging of assets</string>
@@ -604,6 +612,8 @@
     <string name="cm_sound_mode_soundVibrate">Sound+Vibrate</string>
     <string name="pref_flash_mode_title">Flash mode</string>
     <string name="pref_flash_mode_summary">Choose High / Death Ray</string>
+    <string name="pref_mobiledatanetwork_mode_title">Mobiledata auto 2G/3G</string>
+    <string name="pref_mobiledatanetwork_mode_summary">Mobiledata button toggles 2G/3G mode</string>
 
     <!-- Backlight -->
     <string name="backlight_title">Automatic backlight</string>

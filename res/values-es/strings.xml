@@ -340,6 +340,7 @@
     <string name="ringlock_style_entry_bubbles">Estilo clásico</string>
     <string name="ringlock_style_entry_revamped">Estilo renovado</string>
     <string name="ringlock_style_entry_holo">Estilo Holo</string>
+    <string name="ringlock_style_entry_blade">Estilo Blade</string>
     <string name="pref_in_call_style_title">Estilo llamada entrante</string>
     <string name="pref_in_call_style_summary">Elegir estilo de widget de llamadas entrantes aceptar o rechazar</string>
     <string name="incall_style_entry_tabs">Pestañas</string>
@@ -462,6 +463,14 @@
     <!-- Performance Settings : 16bpp Alpha -->
     <string name="pref_use_16bpp_alpha_title">Usar transparencia de 16bits</string>
     <string name="pref_use_16bpp_alpha_summary">Usar la transparencia de 16bit puede mejorar el rendimiento en el desplazamiento de pantalla, pero puede ocasionar defectos visuales (requiere reiniciar)</string>
+
+    <!-- Performance Settings : Scrolling Cache -->
+    <string name="pref_scrollingcache_title">Caché desplazamiento</string>
+    <string name="pref_scrollingcache_summary">Habilitada puede mejorar el desplazamiento a costa de un mayor consumo de memoria</string>
+    <string name="pref_scrollingcache_force_enable">Habilitada siempre</string>
+    <string name="pref_scrollingcache_default_enable">Habilitada por defecto</string>
+    <string name="pref_scrollingcache_default_disable">Deshabilitada por defecto</string>
+    <string name="pref_scrollingcache_force_disable">Deshabilitada siempre</string>
 
     <!-- Performance Settings : Purgeable Assets -->
     <string name="pref_purgeable_assets_title">Permitir purga de activos</string>
@@ -602,6 +611,8 @@
     <string name="cm_sound_mode_soundVibrate">Sonido+Vibración</string>
     <string name="pref_flash_mode_title">Modo de flash</string>
     <string name="pref_flash_mode_summary">Elegir Alto / Rayo Mortal</string>
+    <string name="pref_mobiledatanetwork_mode_title">Auto 2G/3G para datos</string>
+    <string name="pref_mobiledatanetwork_mode_summary">El widget de Datos Móviles gestionará automaticamente el modo 2G/3G</string>
 
     <!-- Backlight -->
     <string name="backlight_title">Luz de fondo automática</string>
