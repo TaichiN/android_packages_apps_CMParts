@@ -108,6 +108,15 @@ public class UIStatusBarActivity extends PreferenceActivity implements OnPrefere
         } catch (SettingNotFoundException e) {
         }
 
+        try {
+	    if (Settings.System.getInt(getContentResolver(),
+                    Settings.System.TIME_12_24) == 24) {
+                mStatusBarAmPm.setEnabled(false);
+                mStatusBarAmPm.setSummary(R.string.ui_status_bar_am_pm_info);
+            }
+        } catch (SettingNotFoundException e ) {
+        }
+
         mStatusBarAmPm = (ListPreference) prefSet.findPreference(PREF_STATUS_BAR_AM_PM);
         mStatusBarBattery = (ListPreference) prefSet.findPreference(PREF_STATUS_BAR_BATTERY);
         mStatusBarCmSignal = (ListPreference) prefSet.findPreference(PREF_STATUS_BAR_CM_SIGNAL);
