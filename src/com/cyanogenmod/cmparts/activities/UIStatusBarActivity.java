@@ -124,6 +124,8 @@ public class UIStatusBarActivity extends PreferenceActivity implements OnPrefere
                     Settings.System.TIME_12_24) == 24) {
                 mStatusBarAmPm.setEnabled(false);
                 mStatusBarAmPm.setSummary(R.string.ui_status_bar_am_pm_info);
+            } else {
+                mStatusBarAmPm.setEnabled(true);
             }
         } catch (SettingNotFoundException e ) {
         }
