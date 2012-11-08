@@ -17,9 +17,11 @@
 package com.cyanogenmod.cmparts.activities;
 
 import com.cyanogenmod.cmparts.R;
+import com.cyanogenmod.cmparts.activities.CPUActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
@@ -27,6 +29,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 
@@ -99,6 +102,30 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private static final int LOCK_MMS_DEFAULT = 0;
 
+    public static final String KSM_RUN_FILE = "/sys/kernel/mm/ksm/run";
+
+    public static final String KSM_PREF = "pref_ksm";
+
+    public static final String KSM_PREF_DISABLED = "0";
+
+    public static final String KSM_PREF_ENABLED = "1";
+
+    public static final String KSM_SLEEP_RUN_FILE = "/sys/kernel/mm/ksm/sleep_millisecs";
+
+    public static final String KSM_SLEEP_PREF = "pref_ksm_sleep";
+
+    private static final String KSM_SLEEP_PROP = "ksm_sleep_time";
+
+    public static final String KSM_SLEEP_PREF_DEFAULT = "1500";
+
+    public static final String KSM_SCAN_RUN_FILE = "/sys/kernel/mm/ksm/pages_to_scan";
+
+    public static final String KSM_SCAN_PREF = "pref_ksm_scan";
+
+    private static final String KSM_SCAN_PROP = "ksm_scan_time";
+
+    public static final String KSM_SCAN_PREF_DEFAULT = "128";
+
     private ListPreference mCompcachePref;
 
     private CheckBoxPreference mJitPref;
@@ -109,6 +136,10 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private ListPreference mScrollingCachePref;
 
+    private ListPreference mKSMSleepPref;
+
+    private ListPreference mKSMScanPref;
+
     private CheckBoxPreference mPurgeableAssetsPref;
 
     private CheckBoxPreference mDisableBootanimPref;
@@ -118,6 +149,8 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
     private CheckBoxPreference mLockMmsPref;
 
     private ListPreference mHeapsizePref;
+
+    private CheckBoxPreference mKSMPref;
 
     private AlertDialog alertDialog;
 
@@ -132,7 +165,9 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         addPreferencesFromResource(R.xml.performance_settings);
 
         PreferenceScreen prefSet = getPreferenceScreen();
-        
+
+        String temp;
+
         PreferenceCategory generalCategory = (PreferenceCategory)prefSet.findPreference(GENERAL_CATEGORY);
 
         mCompcachePref = (ListPreference) prefSet.findPreference(COMPCACHE_PREF);
@@ -172,6 +207,33 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
                 SystemProperties.get(HEAPSIZE_PROP, HEAPSIZE_DEFAULT)));
         mHeapsizePref.setOnPreferenceChangeListener(this);
 
+        mKSMPref = (CheckBoxPreference) prefSet.findPreference(KSM_PREF);
+        if (CPUActivity.fileExists(KSM_RUN_FILE)) {
+            mKSMPref.setChecked("1".equals(CPUActivity.readOneLine(KSM_RUN_FILE)));
+        } else {
+            prefSet.removePreference(mKSMPref);
+        }
+
+        temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+
+        mKSMSleepPref = (ListPreference) prefSet.findPreference(KSM_SLEEP_PREF);
+        mKSMSleepPref.setValue(temp);
+        mKSMSleepPref.setOnPreferenceChangeListener(this);
+
+        if (temp == null) {
+            prefSet.removePreference(mKSMSleepPref);
+        }
+
+        temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+
+        mKSMScanPref = (ListPreference) prefSet.findPreference(KSM_SCAN_PREF);
+        mKSMScanPref.setValue(temp);
+        mKSMScanPref.setOnPreferenceChangeListener(this);
+
+        if (temp == null) {
+            prefSet.removePreference(mKSMScanPref);
+        }
+
         mDisableBootanimPref = (CheckBoxPreference) prefSet.findPreference(DISABLE_BOOTANIMATION_PREF);
         String disableBootanimation = SystemProperties.get(DISABLE_BOOTANIMATION_PERSIST_PROP, DISABLE_BOOTANIMATION_DEFAULT);
         mDisableBootanimPref.setChecked("1".equals(disableBootanimation));
@@ -198,6 +260,30 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
         alertDialog.show();
     }
+
+    @Override
+    public void onResume() {
+        String temp;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        super.onResume();
+
+        temp = prefs.getString(KSM_SCAN_PREF, null);
+
+        if (temp == null) {
+            temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+            mKSMScanPref.setValue(temp);
+        }
+
+        temp = prefs.getString(KSM_SLEEP_PREF, null);
+
+        if (temp == null) {
+            temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+            mKSMSleepPref.setValue(temp);
+        }
+
+    }
+
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 	if (preference == mJitPref) {
@@ -221,6 +307,11 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         if (preference == mPurgeableAssetsPref) {
             SystemProperties.set(PURGEABLE_ASSETS_PERSIST_PROP,
                     mPurgeableAssetsPref.isChecked() ? "1" : "0");
+            return true;
+        }
+
+        if (preference == mKSMPref) {
+            CPUActivity.writeOneLine(KSM_RUN_FILE, mKSMPref.isChecked() ? "1" : "0");
             return true;
         }
 
@@ -256,6 +347,22 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         if (preference == mHeapsizePref) {
             if (newValue != null) {
                 SystemProperties.set(HEAPSIZE_PERSIST_PROP, (String)newValue);
+                return true;
+            }
+        }
+
+        if (preference == mKSMSleepPref) {
+            if (newValue != null) {
+                SystemProperties.set(KSM_SLEEP_PROP, (String)newValue);
+                CPUActivity.writeOneLine(KSM_SLEEP_RUN_FILE, (String)newValue);
+                return true;
+            }
+        }
+
+        if (preference == mKSMScanPref) {
+            if (newValue != null) {
+                SystemProperties.set(KSM_SCAN_PROP, (String)newValue);
+                CPUActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
                 return true;
             }
         }

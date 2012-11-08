@@ -26,6 +26,7 @@ import android.preference.PreferenceScreen;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -194,6 +195,10 @@ public class CPUActivity extends PreferenceActivity implements
             return false;
         }
         return true;
+    }
+
+    public static boolean fileExists(String filename) {
+        return new File(filename).exists();
     }
 
     private String toMHz(String mhzString) {
