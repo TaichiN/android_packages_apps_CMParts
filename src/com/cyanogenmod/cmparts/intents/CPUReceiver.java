@@ -17,6 +17,7 @@
 package com.cyanogenmod.cmparts.intents;
 
 import com.cyanogenmod.cmparts.activities.CPUActivity;
+import com.cyanogenmod.cmparts.activities.PerformanceSettingsActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +35,7 @@ public class CPUReceiver extends BroadcastReceiver {
     private static final String TAG = "CPUSettings";
 
     private static final String CPU_SETTINGS_PROP = "sys.cpufreq.restored";
+    private static final String KSM_SETTINGS_PROP = "sys.ksm.restored";
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
@@ -41,8 +43,11 @@ public class CPUReceiver extends BroadcastReceiver {
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(CPU_SETTINGS_PROP, "true");
             configureCPU(ctx);
+            SystemProperties.set(KSM_SETTINGS_PROP, "true");
+            configureKSM(ctx);
         } else {
             SystemProperties.set(CPU_SETTINGS_PROP, "false");
+            SystemProperties.set(KSM_SETTINGS_PROP, "false");
         }
     }
 
@@ -84,5 +89,17 @@ public class CPUReceiver extends BroadcastReceiver {
             }
             Log.d(TAG, "CPU settings restored.");
         }
+    }
+
+    private void configureKSM(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+
+        boolean ksm = prefs.getBoolean(PerformanceSettingsActivity.KSM_PREF, false);
+        CPUActivity.writeOneLine(PerformanceSettingsActivity.KSM_SLEEP_RUN_FILE, prefs.getString(PerformanceSettingsActivity.KSM_SLEEP_PREF,
+                                 PerformanceSettingsActivity.KSM_SLEEP_PREF_DEFAULT));
+        CPUActivity.writeOneLine(PerformanceSettingsActivity.KSM_SCAN_RUN_FILE, prefs.getString(PerformanceSettingsActivity.KSM_SCAN_PREF,
+                                 PerformanceSettingsActivity.KSM_SCAN_PREF_DEFAULT));
+        CPUActivity.writeOneLine(PerformanceSettingsActivity.KSM_RUN_FILE, ksm ? "1" : "0");
+        Log.d(TAG, "KSM settings restored.");
     }
 }
