@@ -156,6 +156,7 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private int swapAvailable = -1;
 
+    private int ksmAvailable = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +173,7 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
         mCompcachePref = (ListPreference) prefSet.findPreference(COMPCACHE_PREF);
         if (isSwapAvailable()) {
-	    if (SystemProperties.get(COMPCACHE_PERSIST_PROP) == "1")
+            if (SystemProperties.get(COMPCACHE_PERSIST_PROP) == "1")
                 SystemProperties.set(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT);
             mCompcachePref.setValue(SystemProperties.get(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT));
             mCompcachePref.setOnPreferenceChangeListener(this);
@@ -208,30 +209,28 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         mHeapsizePref.setOnPreferenceChangeListener(this);
 
         mKSMPref = (CheckBoxPreference) prefSet.findPreference(KSM_PREF);
-        if (CPUActivity.fileExists(KSM_RUN_FILE)) {
+        if (isKsmAvailable()) {
             mKSMPref.setChecked("1".equals(CPUActivity.readOneLine(KSM_RUN_FILE)));
         } else {
-            prefSet.removePreference(mKSMPref);
+            generalCategory.removePreference(mKSMPref);
         }
-
-        temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
 
         mKSMSleepPref = (ListPreference) prefSet.findPreference(KSM_SLEEP_PREF);
-        mKSMSleepPref.setValue(temp);
-        mKSMSleepPref.setOnPreferenceChangeListener(this);
-
-        if (temp == null) {
-            prefSet.removePreference(mKSMSleepPref);
+        if (isKsmAvailable()) {
+            temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+            mKSMSleepPref.setValue(temp);
+            mKSMSleepPref.setOnPreferenceChangeListener(this);
+        } else {
+            generalCategory.removePreference(mKSMSleepPref);
         }
 
-        temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
-
         mKSMScanPref = (ListPreference) prefSet.findPreference(KSM_SCAN_PREF);
-        mKSMScanPref.setValue(temp);
-        mKSMScanPref.setOnPreferenceChangeListener(this);
-
-        if (temp == null) {
-            prefSet.removePreference(mKSMScanPref);
+        if (isKsmAvailable()) {
+            temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+            mKSMScanPref.setValue(temp);
+            mKSMScanPref.setOnPreferenceChangeListener(this);
+        } else {
+            generalCategory.removePreference(mKSMScanPref);
         }
 
         mDisableBootanimPref = (CheckBoxPreference) prefSet.findPreference(DISABLE_BOOTANIMATION_PREF);
@@ -268,20 +267,21 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
         super.onResume();
 
-        temp = prefs.getString(KSM_SCAN_PREF, null);
+        if (isKsmAvailable()) {
+            temp = prefs.getString(KSM_SCAN_PREF, null);
 
-        if (temp == null) {
-            temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
-            mKSMScanPref.setValue(temp);
+            if (temp == null) {
+                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+                mKSMScanPref.setValue(temp);
+            }
+
+            temp = prefs.getString(KSM_SLEEP_PREF, null);
+
+            if (temp == null) {
+                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+                mKSMSleepPref.setValue(temp);
+            }
         }
-
-        temp = prefs.getString(KSM_SLEEP_PREF, null);
-
-        if (temp == null) {
-            temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
-            mKSMSleepPref.setValue(temp);
-        }
-
     }
 
     @Override
@@ -387,4 +387,13 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         return swapAvailable > 0;
     }
 
+    /**
+     * Check if KSM support is available on the system
+     */
+    private boolean isKsmAvailable() {
+        if (ksmAvailable < 0) {
+            ksmAvailable = new File("/sys/kernel/mm/ksm").exists() ? 1 : 0;
+        }
+        return ksmAvailable > 0;
+    }
 }

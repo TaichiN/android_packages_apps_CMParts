@@ -36,6 +36,7 @@ public class CPUReceiver extends BroadcastReceiver {
 
     private static final String CPU_SETTINGS_PROP = "sys.cpufreq.restored";
     private static final String KSM_SETTINGS_PROP = "sys.ksm.restored";
+    private static final String KSM_DIR_NAME = "/sys/kernel/mm/ksm";
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
@@ -43,8 +44,10 @@ public class CPUReceiver extends BroadcastReceiver {
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(CPU_SETTINGS_PROP, "true");
             configureCPU(ctx);
-            SystemProperties.set(KSM_SETTINGS_PROP, "true");
-            configureKSM(ctx);
+            if (CPUActivity.fileExists(KSM_DIR_NAME)) {
+                SystemProperties.set(KSM_SETTINGS_PROP, "true");
+                configureKSM(ctx);
+            }
         } else {
             SystemProperties.set(CPU_SETTINGS_PROP, "false");
             SystemProperties.set(KSM_SETTINGS_PROP, "false");
