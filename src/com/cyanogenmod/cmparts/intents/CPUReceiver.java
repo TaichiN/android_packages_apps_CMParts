@@ -50,7 +50,7 @@ public class CPUReceiver extends BroadcastReceiver {
         }
 
         if (CPUActivity.fileExists(IOSchedulerActivity.IOSCHED_LIST_FILE)
-                && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+                && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(IOSCHED_SETTINGS_PROP, "true");
             configureIOSched(ctx);
         } else {
@@ -58,7 +58,7 @@ public class CPUReceiver extends BroadcastReceiver {
         }
 
         if (CPUActivity.fileExists(PerformanceSettingsActivity.KSM_RUN_FILE)
-                && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+                && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(KSM_SETTINGS_PROP, "true");
             configureKSM(ctx);
         } else {

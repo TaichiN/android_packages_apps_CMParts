@@ -392,7 +392,7 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
      */
     private boolean isKsmAvailable() {
         if (ksmAvailable < 0) {
-            ksmAvailable = new File("/sys/kernel/mm/ksm").exists() ? 1 : 0;
+            ksmAvailable = new File(KSM_RUN_FILE).exists() ? 1 : 0;
         }
         return ksmAvailable > 0;
     }
