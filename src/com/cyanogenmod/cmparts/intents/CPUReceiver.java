@@ -17,6 +17,7 @@
 package com.cyanogenmod.cmparts.intents;
 
 import com.cyanogenmod.cmparts.activities.CPUActivity;
+import com.cyanogenmod.cmparts.activities.IOSchedulerActivity;
 import com.cyanogenmod.cmparts.activities.PerformanceSettingsActivity;
 
 import android.content.BroadcastReceiver;
@@ -35,8 +36,8 @@ public class CPUReceiver extends BroadcastReceiver {
     private static final String TAG = "CPUSettings";
 
     private static final String CPU_SETTINGS_PROP = "sys.cpufreq.restored";
+    private static final String IOSCHED_SETTINGS_PROP = "sys.iosched.restored";
     private static final String KSM_SETTINGS_PROP = "sys.ksm.restored";
-    private static final String KSM_DIR_NAME = "/sys/kernel/mm/ksm";
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
@@ -44,12 +45,23 @@ public class CPUReceiver extends BroadcastReceiver {
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(CPU_SETTINGS_PROP, "true");
             configureCPU(ctx);
-            if (CPUActivity.fileExists(KSM_DIR_NAME)) {
-                SystemProperties.set(KSM_SETTINGS_PROP, "true");
-                configureKSM(ctx);
-            }
         } else {
             SystemProperties.set(CPU_SETTINGS_PROP, "false");
+        }
+
+        if (CPUActivity.fileExists(IOSchedulerActivity.IOSCHED_LIST_FILE)
+                && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            SystemProperties.set(IOSCHED_SETTINGS_PROP, "true");
+            configureIOSched(ctx);
+        } else {
+            SystemProperties.set(IOSCHED_SETTINGS_PROP, "false");
+        }
+
+        if (CPUActivity.fileExists(PerformanceSettingsActivity.KSM_RUN_FILE)
+                && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            SystemProperties.set(KSM_SETTINGS_PROP, "true");
+            configureKSM(ctx);
+        } else {
             SystemProperties.set(KSM_SETTINGS_PROP, "false");
         }
     }
@@ -91,6 +103,32 @@ public class CPUReceiver extends BroadcastReceiver {
                 CPUActivity.writeOneLine(CPUActivity.FREQ_MIN_FILE, minFrequency);
             }
             Log.d(TAG, "CPU settings restored.");
+        }
+    }
+
+    private void configureIOSched(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+
+        if (prefs.getBoolean(IOSchedulerActivity.SOB_PREF, false) == false) {
+            Log.i(TAG, "Restore disabled by user preference.");
+            return;
+        }
+
+        String ioscheduler = prefs.getString(IOSchedulerActivity.IOSCHED_PREF, null);
+        String availableIOSchedulersLine = CPUActivity.readOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE);
+        boolean noSettings = ((availableIOSchedulersLine == null) || (ioscheduler == null));
+        List<String> ioschedulers = null;
+
+        if (noSettings) {
+            Log.d(TAG, "No I/O scheduler settings saved. Nothing to restore.");
+        } else {
+            if (availableIOSchedulersLine != null){
+                ioschedulers = Arrays.asList(availableIOSchedulersLine.replace("[", "").replace("]", "").split(" "));
+            }
+            if (ioscheduler != null && ioschedulers != null && ioschedulers.contains(ioscheduler)) {
+                CPUActivity.writeOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE, ioscheduler);
+            }
+            Log.d(TAG, "I/O scheduler settings restored.");
         }
     }
 
