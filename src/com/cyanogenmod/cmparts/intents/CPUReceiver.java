@@ -18,7 +18,7 @@ package com.cyanogenmod.cmparts.intents;
 
 import com.cyanogenmod.cmparts.activities.CPUActivity;
 import com.cyanogenmod.cmparts.activities.IOSchedulerActivity;
-import com.cyanogenmod.cmparts.activities.PerformanceSettingsActivity;
+import com.cyanogenmod.cmparts.activities.MemoryManagementActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -57,7 +57,7 @@ public class CPUReceiver extends BroadcastReceiver {
             SystemProperties.set(IOSCHED_SETTINGS_PROP, "false");
         }
 
-        if (CPUActivity.fileExists(PerformanceSettingsActivity.KSM_RUN_FILE)
+        if (CPUActivity.fileExists(MemoryManagementActivity.KSM_RUN_FILE)
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(KSM_SETTINGS_PROP, "true");
             configureKSM(ctx);
@@ -135,12 +135,12 @@ public class CPUReceiver extends BroadcastReceiver {
     private void configureKSM(Context ctx) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
-        boolean ksm = prefs.getBoolean(PerformanceSettingsActivity.KSM_PREF, false);
-        CPUActivity.writeOneLine(PerformanceSettingsActivity.KSM_SLEEP_RUN_FILE, prefs.getString(PerformanceSettingsActivity.KSM_SLEEP_PREF,
-                                 PerformanceSettingsActivity.KSM_SLEEP_PREF_DEFAULT));
-        CPUActivity.writeOneLine(PerformanceSettingsActivity.KSM_SCAN_RUN_FILE, prefs.getString(PerformanceSettingsActivity.KSM_SCAN_PREF,
-                                 PerformanceSettingsActivity.KSM_SCAN_PREF_DEFAULT));
-        CPUActivity.writeOneLine(PerformanceSettingsActivity.KSM_RUN_FILE, ksm ? "1" : "0");
+        boolean ksm = prefs.getBoolean(MemoryManagementActivity.KSM_PREF, false);
+        CPUActivity.writeOneLine(MemoryManagementActivity.KSM_SLEEP_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SLEEP_PREF,
+                                 MemoryManagementActivity.KSM_SLEEP_PREF_DEFAULT));
+        CPUActivity.writeOneLine(MemoryManagementActivity.KSM_SCAN_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SCAN_PREF,
+                                 MemoryManagementActivity.KSM_SCAN_PREF_DEFAULT));
+        CPUActivity.writeOneLine(MemoryManagementActivity.KSM_RUN_FILE, ksm ? "1" : "0");
         Log.d(TAG, "KSM settings restored.");
     }
 }

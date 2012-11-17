@@ -17,11 +17,9 @@
 package com.cyanogenmod.cmparts.activities;
 
 import com.cyanogenmod.cmparts.R;
-import com.cyanogenmod.cmparts.activities.CPUActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
@@ -40,13 +38,7 @@ import java.io.File;
  */
 public class PerformanceSettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
-    private static final String COMPCACHE_PREF = "pref_compcache_size";
-
-    private static final String COMPCACHE_PERSIST_PROP = "persist.service.compcache";
-
-    private static final String COMPCACHE_DEFAULT = SystemProperties.get("ro.compcache.default");
-
-    private static final String GENERAL_CATEGORY = "general_category";
+     private static final String GENERAL_CATEGORY = "general_category";
 
     private static final String JIT_PREF = "pref_jit_mode";
 
@@ -82,51 +74,11 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private static final String SCROLLINGCACHE_DEFAULT = "1";
 
-    private static final String PURGEABLE_ASSETS_PREF = "pref_purgeable_assets";
-
-    private static final String PURGEABLE_ASSETS_PERSIST_PROP = "persist.sys.purgeable_assets";
-
-    private static final String PURGEABLE_ASSETS_DEFAULT = "0";
-
     private static final String DISABLE_BOOTANIMATION_PREF = "pref_disable_bootanimation";
 
     private static final String DISABLE_BOOTANIMATION_PERSIST_PROP = "persist.sys.nobootanimation";
 
     private static final String DISABLE_BOOTANIMATION_DEFAULT = "0";
-
-    private static final String LOCK_HOME_PREF = "pref_lock_home";
-
-    private static final String LOCK_MMS_PREF = "pref_lock_mms";
-
-    private static final int LOCK_HOME_DEFAULT = 0;
-
-    private static final int LOCK_MMS_DEFAULT = 0;
-
-    public static final String KSM_RUN_FILE = "/sys/kernel/mm/ksm/run";
-
-    public static final String KSM_PREF = "pref_ksm";
-
-    public static final String KSM_PREF_DISABLED = "0";
-
-    public static final String KSM_PREF_ENABLED = "1";
-
-    public static final String KSM_SLEEP_RUN_FILE = "/sys/kernel/mm/ksm/sleep_millisecs";
-
-    public static final String KSM_SLEEP_PREF = "pref_ksm_sleep";
-
-    private static final String KSM_SLEEP_PROP = "ksm_sleep_time";
-
-    public static final String KSM_SLEEP_PREF_DEFAULT = "1500";
-
-    public static final String KSM_SCAN_RUN_FILE = "/sys/kernel/mm/ksm/pages_to_scan";
-
-    public static final String KSM_SCAN_PREF = "pref_ksm_scan";
-
-    private static final String KSM_SCAN_PROP = "ksm_scan_time";
-
-    public static final String KSM_SCAN_PREF_DEFAULT = "128";
-
-    private ListPreference mCompcachePref;
 
     private CheckBoxPreference mJitPref;
 
@@ -136,27 +88,11 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private ListPreference mScrollingCachePref;
 
-    private ListPreference mKSMSleepPref;
-
-    private ListPreference mKSMScanPref;
-
-    private CheckBoxPreference mPurgeableAssetsPref;
-
     private CheckBoxPreference mDisableBootanimPref;
-
-    private CheckBoxPreference mLockHomePref;
-
-    private CheckBoxPreference mLockMmsPref;
 
     private ListPreference mHeapsizePref;
 
-    private CheckBoxPreference mKSMPref;
-
     private AlertDialog alertDialog;
-
-    private int swapAvailable = -1;
-
-    private int ksmAvailable = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,16 +106,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         String temp;
 
         PreferenceCategory generalCategory = (PreferenceCategory)prefSet.findPreference(GENERAL_CATEGORY);
-
-        mCompcachePref = (ListPreference) prefSet.findPreference(COMPCACHE_PREF);
-        if (isSwapAvailable()) {
-            if (SystemProperties.get(COMPCACHE_PERSIST_PROP) == "1")
-                SystemProperties.set(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT);
-            mCompcachePref.setValue(SystemProperties.get(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT));
-            mCompcachePref.setOnPreferenceChangeListener(this);
-        } else {
-            generalCategory.removePreference(mCompcachePref);
-        }
 
         mJitPref = (CheckBoxPreference) prefSet.findPreference(JIT_PREF);
         String jitMode = SystemProperties.get(JIT_PERSIST_PROP,
@@ -199,51 +125,14 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
                 SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP, SCROLLINGCACHE_DEFAULT)));
         mScrollingCachePref.setOnPreferenceChangeListener(this);
 
-        mPurgeableAssetsPref = (CheckBoxPreference) prefSet.findPreference(PURGEABLE_ASSETS_PREF);
-        String purgeableAssets = SystemProperties.get(PURGEABLE_ASSETS_PERSIST_PROP, PURGEABLE_ASSETS_DEFAULT);
-        mPurgeableAssetsPref.setChecked("1".equals(purgeableAssets));
-
         mHeapsizePref = (ListPreference) prefSet.findPreference(HEAPSIZE_PREF);
         mHeapsizePref.setValue(SystemProperties.get(HEAPSIZE_PERSIST_PROP,
                 SystemProperties.get(HEAPSIZE_PROP, HEAPSIZE_DEFAULT)));
         mHeapsizePref.setOnPreferenceChangeListener(this);
 
-        mKSMPref = (CheckBoxPreference) prefSet.findPreference(KSM_PREF);
-        if (isKsmAvailable()) {
-            mKSMPref.setChecked("1".equals(CPUActivity.readOneLine(KSM_RUN_FILE)));
-        } else {
-            generalCategory.removePreference(mKSMPref);
-        }
-
-        mKSMSleepPref = (ListPreference) prefSet.findPreference(KSM_SLEEP_PREF);
-        if (isKsmAvailable()) {
-            temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
-            mKSMSleepPref.setValue(temp);
-            mKSMSleepPref.setOnPreferenceChangeListener(this);
-        } else {
-            generalCategory.removePreference(mKSMSleepPref);
-        }
-
-        mKSMScanPref = (ListPreference) prefSet.findPreference(KSM_SCAN_PREF);
-        if (isKsmAvailable()) {
-            temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
-            mKSMScanPref.setValue(temp);
-            mKSMScanPref.setOnPreferenceChangeListener(this);
-        } else {
-            generalCategory.removePreference(mKSMScanPref);
-        }
-
         mDisableBootanimPref = (CheckBoxPreference) prefSet.findPreference(DISABLE_BOOTANIMATION_PREF);
         String disableBootanimation = SystemProperties.get(DISABLE_BOOTANIMATION_PERSIST_PROP, DISABLE_BOOTANIMATION_DEFAULT);
         mDisableBootanimPref.setChecked("1".equals(disableBootanimation));
-
-        mLockHomePref = (CheckBoxPreference) prefSet.findPreference(LOCK_HOME_PREF);
-        mLockHomePref.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.LOCK_HOME_IN_MEMORY, LOCK_HOME_DEFAULT) == 1);
-
-        mLockMmsPref = (CheckBoxPreference) prefSet.findPreference(LOCK_MMS_PREF);
-        mLockMmsPref.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.LOCK_MMS_IN_MEMORY, LOCK_MMS_DEFAULT) == 1);
 
         // Set up the warning
         alertDialog = new AlertDialog.Builder(this).create();
@@ -258,30 +147,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         });
 
         alertDialog.show();
-    }
-
-    @Override
-    public void onResume() {
-        String temp;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        super.onResume();
-
-        if (isKsmAvailable()) {
-            temp = prefs.getString(KSM_SCAN_PREF, null);
-
-            if (temp == null) {
-                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
-                mKSMScanPref.setValue(temp);
-            }
-
-            temp = prefs.getString(KSM_SLEEP_PREF, null);
-
-            if (temp == null) {
-                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
-                mKSMSleepPref.setValue(temp);
-            }
-        }
     }
 
     @Override
@@ -304,32 +169,9 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
             return true;
         }
 
-        if (preference == mPurgeableAssetsPref) {
-            SystemProperties.set(PURGEABLE_ASSETS_PERSIST_PROP,
-                    mPurgeableAssetsPref.isChecked() ? "1" : "0");
-            return true;
-        }
-
-        if (preference == mKSMPref) {
-            CPUActivity.writeOneLine(KSM_RUN_FILE, mKSMPref.isChecked() ? "1" : "0");
-            return true;
-        }
-
         if (preference == mDisableBootanimPref) {
             SystemProperties.set(DISABLE_BOOTANIMATION_PERSIST_PROP,
                     mDisableBootanimPref.isChecked() ? "1" : "0");
-            return true;
-        }
-
-        if (preference == mLockHomePref) {
-            Settings.System.putInt(getContentResolver(),
-                    Settings.System.LOCK_HOME_IN_MEMORY, mLockHomePref.isChecked() ? 1 : 0);
-            return true;
-        }
-
-        if (preference == mLockMmsPref) {
-            Settings.System.putInt(getContentResolver(),
-                    Settings.System.LOCK_MMS_IN_MEMORY, mLockMmsPref.isChecked() ? 1 : 0);
             return true;
         }
 
@@ -351,49 +193,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
             }
         }
 
-        if (preference == mKSMSleepPref) {
-            if (newValue != null) {
-                SystemProperties.set(KSM_SLEEP_PROP, (String)newValue);
-                CPUActivity.writeOneLine(KSM_SLEEP_RUN_FILE, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mKSMScanPref) {
-            if (newValue != null) {
-                SystemProperties.set(KSM_SCAN_PROP, (String)newValue);
-                CPUActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mCompcachePref) {
-            if (newValue != null) {
-                SystemProperties.set(COMPCACHE_PERSIST_PROP, (String)newValue);
-                return true;
-	    }
-        }
-
         return false;
-    }
-
-    /**
-     * Check if swap support is available on the system
-     */
-    private boolean isSwapAvailable() {
-        if (swapAvailable < 0) {
-            swapAvailable = new File("/proc/swaps").exists() ? 1 : 0;
-        }
-        return swapAvailable > 0;
-    }
-
-    /**
-     * Check if KSM support is available on the system
-     */
-    private boolean isKsmAvailable() {
-        if (ksmAvailable < 0) {
-            ksmAvailable = new File(KSM_RUN_FILE).exists() ? 1 : 0;
-        }
-        return ksmAvailable > 0;
     }
 }
