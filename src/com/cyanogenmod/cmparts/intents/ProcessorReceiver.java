@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ProcessorReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "CPUSettings";
+    private static final String TAG = "ProcessorSettings";
 
     private static final String CPU_SETTINGS_PROP = "sys.cpufreq.restored";
     private static final String IOSCHED_SETTINGS_PROP = "sys.iosched.restored";
