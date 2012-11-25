@@ -62,8 +62,8 @@ public class IOSchedulerActivity extends PreferenceActivity implements
 
         /* I/O scheduler
         Some systems might not use I/O schedulers */
-        if (!CPUActivity.fileExists(IOSCHED_LIST_FILE) ||
-            (availableIOSchedulersLine = CPUActivity.readOneLine(IOSCHED_LIST_FILE)) == null) {
+        if (!ProcessorActivity.fileExists(IOSCHED_LIST_FILE) ||
+            (availableIOSchedulersLine = ProcessorActivity.readOneLine(IOSCHED_LIST_FILE)) == null) {
             prefScreen.removePreference(mIOSchedulerPref);
 
         } else {
@@ -90,8 +90,8 @@ public class IOSchedulerActivity extends PreferenceActivity implements
 
         super.onResume();
 
-        if (CPUActivity.fileExists(IOSCHED_LIST_FILE) &&
-            (availableIOSchedulersLine = CPUActivity.readOneLine(IOSCHED_LIST_FILE)) != null) {
+        if (ProcessorActivity.fileExists(IOSCHED_LIST_FILE) &&
+            (availableIOSchedulersLine = ProcessorActivity.readOneLine(IOSCHED_LIST_FILE)) != null) {
             bropen = availableIOSchedulersLine.indexOf("[");
             brclose = availableIOSchedulersLine.lastIndexOf("]");
             if (bropen >= 0 && brclose >= 0) {
@@ -109,7 +109,7 @@ public class IOSchedulerActivity extends PreferenceActivity implements
                 fname = IOSCHED_LIST_FILE;
             }
 
-            if (CPUActivity.writeOneLine(fname, (String) newValue)) {
+            if (ProcessorActivity.writeOneLine(fname, (String) newValue)) {
                 if (preference == mIOSchedulerPref) {
                     mIOSchedulerPref.setSummary(String.format(mIOSchedulerFormat, (String) newValue));
                 }

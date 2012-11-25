@@ -8,13 +8,13 @@
         android:title="@string/general_title">
 
         <PreferenceScreen
-            android:key="cpu_settings"
-            android:title="@string/cpu_title"
-            android:summary="@string/cpu_summary">
+            android:key="processor_settings"
+            android:title="@string/processor_title"
+            android:summary="@string/processor_summary">
             <intent
                 android:action="android.intent.action.MAIN"
                 android:targetPackage="com.cyanogenmod.cmparts"
-                android:targetClass="com.cyanogenmod.cmparts.activities.CPUActivity" />
+                android:targetClass="com.cyanogenmod.cmparts.activities.ProcessorActivity" />
         </PreferenceScreen>
 
         <PreferenceScreen

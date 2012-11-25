@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
-
     <ListPreference
         android:key="pref_compcache_size"
         android:dialogTitle="@string/pref_compcache_title"
@@ -14,6 +13,16 @@
         android:key="pref_purgeable_assets"
         android:title="@string/pref_purgeable_assets_title"
         android:summary="@string/pref_purgeable_assets_summary" />
+
+    <CheckBoxPreference
+        android:key="pref_lock_home"
+        android:title="@string/pref_lock_home_title"
+        android:summary="@string/pref_lock_home_summary" />
+
+    <CheckBoxPreference
+        android:key="pref_lock_mms"
+        android:title="@string/pref_lock_mms_title"
+        android:summary="@string/pref_lock_mms_summary" />
 
     <CheckBoxPreference
         android:key="pref_ksm"
@@ -37,15 +46,4 @@
         android:summary="@string/pref_ksm_scan_summary"
         android:entries="@array/entries_ksm_scan"
         android:entryValues="@array/values_ksm_scan" />
-
-    <CheckBoxPreference
-        android:key="pref_lock_home"
-        android:title="@string/pref_lock_home_title"
-        android:summary="@string/pref_lock_home_summary" />
-
-    <CheckBoxPreference
-        android:key="pref_lock_mms"
-        android:title="@string/pref_lock_mms_title"
-        android:summary="@string/pref_lock_mms_summary" />
-
 </PreferenceScreen>

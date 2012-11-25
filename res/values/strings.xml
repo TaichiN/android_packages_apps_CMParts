@@ -452,22 +452,25 @@
     <!-- Performance Settings -->
     <string name="performance_settings_title">Performance settings</string>
 
-    <!-- CPU Settings strings -->
-    <string name="cpu_settings_title">CPU settings</string>
-    <string name="cpu_title">CPU settings</string>
-    <string name="cpu_summary">Governor and clock settings</string>
-    <string name="cpu_governors_title">Available governors</string>
+    <!-- Performance Settings : Processor settings -->
+    <!-- Performance Settings : Processor settings title -->
+    <string name="processor_settings_title">Processor</string>
+    <string name="processor_title">Processor settings</string>
+    <string name="processor_summary">Change CPU governor and clock speed</string>
+
+    <!-- Performance Settings : Processor settings sub items -->
+    <string name="cpu_governors_title">CPU governor</string>
     <string name="cpu_governors_summary">List of available governors\nCurrently selected: %S</string>
     <string name="cpu_min_freq_title">Min CPU frequency</string>
     <string name="cpu_min_freq_summary">Minimum CPU frequency\nCurrently: %s</string>
     <string name="cpu_max_freq_title">Max CPU frequency</string>
     <string name="cpu_max_freq_summary">Maximum CPU frequency\nCurrently: %s</string>
     <string name="cpu_set_on_boot">Set on boot</string>
-    <string name="cpu_set_on_boot_summary">Restore CPU settings on boot</string>
+    <string name="cpu_set_on_boot_summary">Restore the processor settings on boot</string>
 
     <!-- Performance Settings : I/O scheduler settings title -->
     <string name="io_scheds_title">I/O scheduler</string>
-    <!-- Performance Settings : I/O scheduler settings summary. -->
+    <!-- Performance Settings : I/O scheduler settings summary -->
     <string name="io_scheds_summary">Change I/O scheduler</string>
     <!-- Performance Settings : I/O scheduler settings sub items -->
     <string name="io_sched_title">I/O scheduler</string>
@@ -475,33 +478,26 @@
     <string name="io_sched_set_on_boot">Set on boot</string>
     <string name="io_sched_set_on_boot_summary">Restore the I/O scheduler settings on boot</string>
 
-    <!-- Memory Management -->
+    <!-- Performance Settings : Memory Management settings title -->
     <string name="memory_management_title">Memory management</string>
+    <!-- Performance Settings : Memory Management settings summary -->
     <string name="memory_management_summary">Customize the usage of memory to alter system performance</string>
 
-    <!-- Performance Settings : Compcache -->
+    <!-- Performance Settings : Memory Management settings sub items -->
     <string name="pref_compcache_title">Compcache RAM Usage</string>
     <string name="pref_compcache_summary">Compress memory for increased virtual capacity (requires reboot)</string>
-
-    <!-- Performance Settings : Purgeable Assets -->
     <string name="pref_purgeable_assets_title">Allow purging of assets</string>
     <string name="pref_purgeable_assets_summary">System can free more RAM when needed if asset bitmap memory can be reclaimed (requires reboot)</string>
-
-    <!-- Performance Settings : KSM -->
+    <string name="pref_lock_home_title">Lock home in memory</string>
+    <string name="pref_lock_home_summary">Attempt to keep the current home app in memory at all times</string>
+    <string name="pref_lock_mms_title">Lock messaging app in memory</string>
+    <string name="pref_lock_mms_summary">Avoid lost messages on low memory situations</string>
     <string name="pref_ksm_title">Kernel samepage merging</string>
     <string name="pref_ksm_summary">KSM reduces physical memory requirements and improves performance</string>
     <string name="pref_ksm_sleep_title">KSM Sleep time</string>
     <string name="pref_ksm_sleep_summary">How many milliseconds ksmd should sleep before next scan</string>
     <string name="pref_ksm_scan_title">KSM Pages to scan</string>
     <string name="pref_ksm_scan_summary">How many present pages to scan before ksmd goes to sleep</string>
-
-    <!-- Performance : Lock home memory -->
-    <string name="pref_lock_home_title">Lock home in memory</string>
-    <string name="pref_lock_home_summary">Attempt to keep the current home app in memory at all times</string>
-
-    <!-- Performance : Lock mms app in memory -->
-    <string name="pref_lock_mms_title">Lock messaging app in memory</string>
-    <string name="pref_lock_mms_summary">Avoid lost messages on low memory situations</string>
 
     <!-- Performance Settings : JIT Mode -->
     <string name="pref_jit_mode_title">Use JIT</string>

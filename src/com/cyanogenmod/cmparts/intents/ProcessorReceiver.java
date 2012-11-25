@@ -16,7 +16,7 @@
 
 package com.cyanogenmod.cmparts.intents;
 
-import com.cyanogenmod.cmparts.activities.CPUActivity;
+import com.cyanogenmod.cmparts.activities.ProcessorActivity;
 import com.cyanogenmod.cmparts.activities.IOSchedulerActivity;
 import com.cyanogenmod.cmparts.activities.MemoryManagementActivity;
 
@@ -31,7 +31,7 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.List;
 
-public class CPUReceiver extends BroadcastReceiver {
+public class ProcessorReceiver extends BroadcastReceiver {
 
     private static final String TAG = "CPUSettings";
 
@@ -49,7 +49,7 @@ public class CPUReceiver extends BroadcastReceiver {
             SystemProperties.set(CPU_SETTINGS_PROP, "false");
         }
 
-        if (CPUActivity.fileExists(IOSchedulerActivity.IOSCHED_LIST_FILE)
+        if (ProcessorActivity.fileExists(IOSchedulerActivity.IOSCHED_LIST_FILE)
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(IOSCHED_SETTINGS_PROP, "true");
             configureIOSched(ctx);
@@ -57,7 +57,7 @@ public class CPUReceiver extends BroadcastReceiver {
             SystemProperties.set(IOSCHED_SETTINGS_PROP, "false");
         }
 
-        if (CPUActivity.fileExists(MemoryManagementActivity.KSM_RUN_FILE)
+        if (ProcessorActivity.fileExists(MemoryManagementActivity.KSM_RUN_FILE)
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(KSM_SETTINGS_PROP, "true");
             configureKSM(ctx);
@@ -69,16 +69,16 @@ public class CPUReceiver extends BroadcastReceiver {
     private void configureCPU(Context ctx) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
-        if (prefs.getBoolean(CPUActivity.SOB_PREF, false) == false) {
+        if (prefs.getBoolean(ProcessorActivity.SOB_PREF, false) == false) {
             Log.i(TAG, "Restore disabled by user preference.");
             return;
         }
 
-        String governor = prefs.getString(CPUActivity.GOV_PREF, null);
-        String minFrequency = prefs.getString(CPUActivity.MIN_FREQ_PREF, null);
-        String maxFrequency = prefs.getString(CPUActivity.MAX_FREQ_PREF, null);
-        String availableFrequenciesLine = CPUActivity.readOneLine(CPUActivity.FREQ_LIST_FILE);
-        String availableGovernorsLine = CPUActivity.readOneLine(CPUActivity.GOVERNORS_LIST_FILE);
+        String governor = prefs.getString(ProcessorActivity.GOV_PREF, null);
+        String minFrequency = prefs.getString(ProcessorActivity.MIN_FREQ_PREF, null);
+        String maxFrequency = prefs.getString(ProcessorActivity.MAX_FREQ_PREF, null);
+        String availableFrequenciesLine = ProcessorActivity.readOneLine(ProcessorActivity.FREQ_LIST_FILE);
+        String availableGovernorsLine = ProcessorActivity.readOneLine(ProcessorActivity.GOVERNORS_LIST_FILE);
         boolean noSettings = ((availableGovernorsLine == null) || (governor == null)) && 
                              ((availableFrequenciesLine == null) || ((minFrequency == null) && (maxFrequency == null)));
         List<String> frequencies = null;
@@ -94,13 +94,13 @@ public class CPUReceiver extends BroadcastReceiver {
                 frequencies = Arrays.asList(availableFrequenciesLine.split(" "));  
             }
             if (governor != null && governors != null && governors.contains(governor)) {
-                CPUActivity.writeOneLine(CPUActivity.GOVERNOR, governor);
+                ProcessorActivity.writeOneLine(ProcessorActivity.GOVERNOR, governor);
             }
             if (maxFrequency != null && frequencies != null && frequencies.contains(maxFrequency)) {
-                CPUActivity.writeOneLine(CPUActivity.FREQ_MAX_FILE, maxFrequency);
+                ProcessorActivity.writeOneLine(ProcessorActivity.FREQ_MAX_FILE, maxFrequency);
             }
             if (minFrequency != null && frequencies != null && frequencies.contains(minFrequency)) {
-                CPUActivity.writeOneLine(CPUActivity.FREQ_MIN_FILE, minFrequency);
+                ProcessorActivity.writeOneLine(ProcessorActivity.FREQ_MIN_FILE, minFrequency);
             }
             Log.d(TAG, "CPU settings restored.");
         }
@@ -115,7 +115,7 @@ public class CPUReceiver extends BroadcastReceiver {
         }
 
         String ioscheduler = prefs.getString(IOSchedulerActivity.IOSCHED_PREF, null);
-        String availableIOSchedulersLine = CPUActivity.readOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE);
+        String availableIOSchedulersLine = ProcessorActivity.readOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE);
         boolean noSettings = ((availableIOSchedulersLine == null) || (ioscheduler == null));
         List<String> ioschedulers = null;
 
@@ -126,7 +126,7 @@ public class CPUReceiver extends BroadcastReceiver {
                 ioschedulers = Arrays.asList(availableIOSchedulersLine.replace("[", "").replace("]", "").split(" "));
             }
             if (ioscheduler != null && ioschedulers != null && ioschedulers.contains(ioscheduler)) {
-                CPUActivity.writeOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE, ioscheduler);
+                ProcessorActivity.writeOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE, ioscheduler);
             }
             Log.d(TAG, "I/O scheduler settings restored.");
         }
@@ -136,11 +136,11 @@ public class CPUReceiver extends BroadcastReceiver {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
         boolean ksm = prefs.getBoolean(MemoryManagementActivity.KSM_PREF, false);
-        CPUActivity.writeOneLine(MemoryManagementActivity.KSM_SLEEP_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SLEEP_PREF,
+        ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_SLEEP_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SLEEP_PREF,
                                  MemoryManagementActivity.KSM_SLEEP_PREF_DEFAULT));
-        CPUActivity.writeOneLine(MemoryManagementActivity.KSM_SCAN_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SCAN_PREF,
+        ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_SCAN_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SCAN_PREF,
                                  MemoryManagementActivity.KSM_SCAN_PREF_DEFAULT));
-        CPUActivity.writeOneLine(MemoryManagementActivity.KSM_RUN_FILE, ksm ? "1" : "0");
+        ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_RUN_FILE, ksm ? "1" : "0");
         Log.d(TAG, "KSM settings restored.");
     }
 }

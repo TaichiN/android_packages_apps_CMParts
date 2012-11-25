@@ -131,13 +131,13 @@ public class MemoryManagementActivity extends PreferenceActivity implements
             mPurgeableAssetsPref.setChecked("1".equals(purgeableAssets));
 
             if (isKsmAvailable()) {
-                mKSMPref.setChecked(KSM_PREF_ENABLED.equals(CPUActivity.readOneLine(KSM_RUN_FILE)));
+                mKSMPref.setChecked(KSM_PREF_ENABLED.equals(ProcessorActivity.readOneLine(KSM_RUN_FILE)));
             } else {
                 prefSet.removePreference(mKSMPref);
             }
 
             if (isKsmAvailable()) {
-                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+                temp = ProcessorActivity.readOneLine(KSM_SLEEP_RUN_FILE);
                 mKSMSleepPref.setValue(temp);
                 mKSMSleepPref.setOnPreferenceChangeListener(this);
             } else {
@@ -145,7 +145,7 @@ public class MemoryManagementActivity extends PreferenceActivity implements
             }
 
             if (isKsmAvailable()) {
-                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+                temp = ProcessorActivity.readOneLine(KSM_SCAN_RUN_FILE);
                 mKSMScanPref.setValue(temp);
                 mKSMScanPref.setOnPreferenceChangeListener(this);
             } else {
@@ -171,14 +171,14 @@ public class MemoryManagementActivity extends PreferenceActivity implements
             temp = prefs.getString(KSM_SCAN_PREF, null);
 
             if (temp == null) {
-                temp = CPUActivity.readOneLine(KSM_SCAN_RUN_FILE);
+                temp = ProcessorActivity.readOneLine(KSM_SCAN_RUN_FILE);
                 mKSMScanPref.setValue(temp);
             }
 
             temp = prefs.getString(KSM_SLEEP_PREF, null);
 
             if (temp == null) {
-                temp = CPUActivity.readOneLine(KSM_SLEEP_RUN_FILE);
+                temp = ProcessorActivity.readOneLine(KSM_SLEEP_RUN_FILE);
                 mKSMSleepPref.setValue(temp);
             }
         }
@@ -194,7 +194,7 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         }
 
         if (preference == mKSMPref) {
-            CPUActivity.writeOneLine(KSM_RUN_FILE, mKSMPref.isChecked() ? "1" : "0");
+            ProcessorActivity.writeOneLine(KSM_RUN_FILE, mKSMPref.isChecked() ? "1" : "0");
             return true;
         }
 
@@ -224,7 +224,7 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         if (preference == mKSMSleepPref) {
             if (newValue != null) {
                 SystemProperties.set(KSM_SLEEP_PROP, (String)newValue);
-                CPUActivity.writeOneLine(KSM_SLEEP_RUN_FILE, (String)newValue);
+                ProcessorActivity.writeOneLine(KSM_SLEEP_RUN_FILE, (String)newValue);
                 return true;
             }
         }
@@ -232,7 +232,7 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         if (preference == mKSMScanPref) {
             if (newValue != null) {
                 SystemProperties.set(KSM_SCAN_PROP, (String)newValue);
-                CPUActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
+                ProcessorActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
                 return true;
             }
         }

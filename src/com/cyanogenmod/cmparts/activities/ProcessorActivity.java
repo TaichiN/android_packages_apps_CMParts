@@ -34,7 +34,7 @@ import java.io.IOException;
 //
 // CPU Related Settings
 //
-public class CPUActivity extends PreferenceActivity implements
+public class ProcessorActivity extends PreferenceActivity implements
         Preference.OnPreferenceChangeListener {
 
     public static final String GOV_PREF = "pref_cpu_gov";
@@ -47,7 +47,7 @@ public class CPUActivity extends PreferenceActivity implements
     public static final String FREQ_MIN_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq";
     public static final String SOB_PREF = "pref_set_on_boot";
 
-    private static final String TAG = "CPUSettings";
+    private static final String TAG = "ProcessorSettings";
 
     private String mGovernorFormat;
     private String mMinFrequencyFormat;
@@ -78,8 +78,8 @@ public class CPUActivity extends PreferenceActivity implements
             frequencies[i] = toMHz(availableFrequencies[i]);
         }
 
-        setTitle(R.string.cpu_title);
-        addPreferencesFromResource(R.xml.cpu_settings);
+        setTitle(R.string.processor_title);
+        addPreferencesFromResource(R.xml.processor_settings);
 
         PreferenceScreen PrefScreen = getPreferenceScreen();
 
