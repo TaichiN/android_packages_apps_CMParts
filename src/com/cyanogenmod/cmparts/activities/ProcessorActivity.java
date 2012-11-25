@@ -32,7 +32,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 //
-// CPU Related Settings
+// Processor Related Settings
 //
 public class ProcessorActivity extends PreferenceActivity implements
         Preference.OnPreferenceChangeListener {
