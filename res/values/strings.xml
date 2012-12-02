@@ -465,6 +465,7 @@
     <string name="processor_summary">Change CPU governor and clock speed</string>
 
     <!-- Performance Settings : Processor settings sub items -->
+    <string name="cpu_cur_freq_title">Current CPU frequency</string>
     <string name="cpu_governors_title">CPU governor</string>
     <string name="cpu_governors_summary">List of available governors\nCurrently selected: %S</string>
     <string name="cpu_min_freq_title">Min CPU frequency</string>
