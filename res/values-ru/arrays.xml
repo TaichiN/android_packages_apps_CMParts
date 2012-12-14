@@ -230,6 +230,8 @@
     <string-array name="entries_status_bar_battery">
         <item>Иконка (По умолчанию)</item>
         <item>Процентный</item>
+        <item>Круг</item>
+        <item>Круг с процентами</item>
         <item>Скрытый</item>
     </string-array>
 

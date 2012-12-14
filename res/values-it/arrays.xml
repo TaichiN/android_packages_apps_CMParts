@@ -32,6 +32,8 @@
     <string-array name="entries_status_bar_battery">
         <item>Icona (Default)</item>
         <item>Percentuale</item>
+        <item>Cerchio</item>
+        <item>Cerchio con percentuale</item>
         <item>Non visualizzare</item>
     </string-array>
 

@@ -278,6 +278,8 @@
     <string-array name="entries_status_bar_battery">
 	<item>图标(默认)</item>
 	<item>百分比</item>
+	<item>环形</item>
+	<item>环形与百分比</item>
 	<item>隐藏</item>
     </string-array>
 

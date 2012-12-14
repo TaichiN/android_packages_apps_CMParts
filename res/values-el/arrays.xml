@@ -32,6 +32,8 @@
     <string-array name="entries_status_bar_battery">
         <item>Εικονίδιο (Προεπιλογή)</item>
         <item>Ποσοστό</item>
+        <item>Κύκλος</item>
+        <item>Κύκλος με ποσοστό</item>
         <item>Κρυφό</item>
     </string-array>
 
