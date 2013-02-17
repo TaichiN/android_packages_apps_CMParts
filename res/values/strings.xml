@@ -489,23 +489,18 @@
     <!-- Performance Settings : Memory management Settings -->
     <string name="memory_management_title">Memory management</string>
     <string name="memory_management_summary">Customize the usage of memory to alter system performance</string>
-
     <!-- Performance Settings : Memory management Settings : Compcache -->
     <string name="pref_compcache_title">Compcache RAM Usage</string>
     <string name="pref_compcache_summary">Compress memory for increased virtual capacity (requires reboot)</string>
-
     <!-- Performance Settings : Memory management Settings : Purgeable Assets -->
     <string name="pref_purgeable_assets_title">Allow purging of assets</string>
     <string name="pref_purgeable_assets_summary">System can free more RAM when needed if asset bitmap memory can be reclaimed (requires reboot)</string>
-
     <!-- Performance Settings : Memory management Settings : Lock home memory -->
     <string name="pref_lock_home_title">Lock home in memory</string>
     <string name="pref_lock_home_summary">Attempt to keep the current home app in memory at all times</string>
-
     <!--Performance Settings :  Memory management Settings : Lock mms app in memory -->
     <string name="pref_lock_mms_title">Lock messaging app in memory</string>
     <string name="pref_lock_mms_summary">Avoid lost messages on low memory situations</string>
-
     <!-- Performance Settings : Memory management : KSM -->
     <string name="pref_ksm_title">Kernel samepage merging</string>
     <string name="pref_ksm_summary">KSM reduces physical memory requirements and improves performance</string>
@@ -513,7 +508,6 @@
     <string name="pref_ksm_sleep_summary">How many milliseconds ksmd should sleep before next scan</string>
     <string name="pref_ksm_scan_title">KSM Pages to scan</string>
     <string name="pref_ksm_scan_summary">How many present pages to scan before ksmd goes to sleep</string>
-
     <!-- Performance Settings : Memory management : Scrolling Cache -->
     <string name="pref_scrollingcache_title">Scrolling cache</string>
     <string name="pref_scrollingcache_summary">Scrolling cache may improve scrolling performance at the cost of memory</string>
@@ -521,24 +515,24 @@
     <string name="pref_scrollingcache_default_enable">Default enable</string>
     <string name="pref_scrollingcache_default_disable">Default disable</string>
     <string name="pref_scrollingcache_force_disable">Force disable</string>
-
     <!-- Performance Settings : Memory management : VM Heap Size -->
     <string name="pref_heapsize_title">VM heap size</string>
     <string name="pref_heapsize_summary">Maximum amount of memory per VM heap (requires reboot)</string>
 
-    <!-- Performance Settings : JIT Mode -->
+    <!-- Performance Settings : Misc tweaks title -->
+    <string name="misc_tweaks_title">Miscellaneous tweaks</string>
+    <!-- Performance Settings : Misc tweaks summary -->
+    <string name="misc_tweaks_summary">Change misc settings to improve system performance</string>
+    <!-- Performance Settings : Misc tweaks : JIT Mode -->
     <string name="pref_jit_mode_title">Use JIT</string>
     <string name="pref_jit_mode_summary">Use the Dalvik just-in-time compiler (requires reboot)</string>
-
-    <!-- Performance Settings : Dithering -->
+    <!-- Performance Settings : Misc tweaks : Dithering -->
     <string name="pref_use_dithering_title">Enable surface dithering</string>
     <string name="pref_use_dithering_summary">Dithering surfaces improves image quality at the cost of performance (requires reboot)</string>
-
-    <!-- Performance Settings : 16bpp Alpha -->
+    <!-- Performance Settings : Misc tweaks : 16bpp Alpha -->
     <string name="pref_use_16bpp_alpha_title">Use 16bit transparency</string>
     <string name="pref_use_16bpp_alpha_summary">Using 16bit transparency can improve scrolling performance, but may cause visual artifacts (requires reboot)</string>
-
-    <!-- Performance : Disable bootanimation -->
+    <!-- Performance Settings : Misc tweaks : Disable bootanimation -->
     <string name="pref_disable_bootanimation_title">Disable boot animation</string>
     <string name="pref_disable_bootanimation_summary">Don\'t show the boot animation for faster boot</string>
 

@@ -41,7 +41,12 @@ public class ProcessorReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
-        if (SystemProperties.getBoolean(CPU_SETTINGS_PROP, false) == false
+
+        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                setScreenOffCPU(ctx, true);
+        } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                setScreenOffCPU(ctx, false);
+        } else if (SystemProperties.getBoolean(CPU_SETTINGS_PROP, false) == false
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(CPU_SETTINGS_PROP, "true");
             configureCPU(ctx);
@@ -64,6 +69,7 @@ public class ProcessorReceiver extends BroadcastReceiver {
         } else {
             SystemProperties.set(KSM_SETTINGS_PROP, "false");
         }
+
     }
 
     private void configureCPU(Context ctx) {
@@ -143,4 +149,22 @@ public class ProcessorReceiver extends BroadcastReceiver {
         ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_RUN_FILE, ksm ? "1" : "0");
         Log.d(TAG, "KSM settings restored.");
     }
+
+    private void setScreenOffCPU(Context ctx, boolean screenOff) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String maxFrequency = prefs.getString(ProcessorActivity.MAX_FREQ_PREF, null);
+        String maxSoFrequency = prefs.getString(ProcessorActivity.SO_MAX_FREQ_PREF, null);
+        if (maxSoFrequency == null || maxFrequency == null) {
+            Log.i(TAG, "Screen off or normal max CPU freq not saved. No change.");
+        } else {
+            if (screenOff) {
+                ProcessorActivity.writeOneLine(ProcessorActivity.FREQ_MAX_FILE, maxSoFrequency);
+                Log.i(TAG, "Screen off max CPU freq set");
+            } else {
+                ProcessorActivity.writeOneLine(ProcessorActivity.FREQ_MAX_FILE, maxFrequency);
+                Log.i(TAG, "Normal (screen on) max CPU freq restored");
+            }
+        }
+    }
+
 }

@@ -2,61 +2,44 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- General settings -->
-    <PreferenceCategory
-        android:key="general_category"
-        android:title="@string/general_title">
+    <PreferenceScreen
+        android:key="processor_settings"
+        android:title="@string/processor_title"
+        android:summary="@string/processor_summary">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.cyanogenmod.cmparts"
+            android:targetClass="com.cyanogenmod.cmparts.activities.ProcessorActivity" />
+    </PreferenceScreen>
 
-        <PreferenceScreen
-            android:key="processor_settings"
-            android:title="@string/processor_title"
-            android:summary="@string/processor_summary">
-            <intent
-                android:action="android.intent.action.MAIN"
-                android:targetPackage="com.cyanogenmod.cmparts"
-                android:targetClass="com.cyanogenmod.cmparts.activities.ProcessorActivity" />
-        </PreferenceScreen>
+    <PreferenceScreen
+        android:key="ioscheduler"
+        android:title="@string/io_scheds_title"
+        android:summary="@string/io_scheds_summary">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.cyanogenmod.cmparts"
+            android:targetClass="com.cyanogenmod.cmparts.activities.IOSchedulerActivity" />
+    </PreferenceScreen>
 
-        <PreferenceScreen
-            android:key="ioscheduler"
-            android:title="@string/io_scheds_title"
-            android:summary="@string/io_scheds_summary">
-            <intent
-                android:action="android.intent.action.MAIN"
-                android:targetPackage="com.cyanogenmod.cmparts"
-                android:targetClass="com.cyanogenmod.cmparts.activities.IOSchedulerActivity" />
-        </PreferenceScreen>
+    <PreferenceScreen
+        android:key="memory_management"
+        android:title="@string/memory_management_title"
+        android:summary="@string/memory_management_summary">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.cyanogenmod.cmparts"
+            android:targetClass="com.cyanogenmod.cmparts.activities.MemoryManagementActivity" />
+    </PreferenceScreen>
 
-        <PreferenceScreen
-            android:key="memory_management"
-            android:title="@string/memory_management_title"
-            android:summary="@string/memory_management_summary">
-            <intent
-                android:action="android.intent.action.MAIN"
-                android:targetPackage="com.cyanogenmod.cmparts"
-                android:targetClass="com.cyanogenmod.cmparts.activities.MemoryManagementActivity" />
-        </PreferenceScreen>
-
-        <CheckBoxPreference
-            android:key="pref_jit_mode"
-            android:title="@string/pref_jit_mode_title"
-            android:summary="@string/pref_jit_mode_summary" />
-
-        <CheckBoxPreference
-            android:key="pref_use_16bpp_alpha"
-            android:title="@string/pref_use_16bpp_alpha_title"
-            android:summary="@string/pref_use_16bpp_alpha_summary" />
-
-        <CheckBoxPreference
-            android:key="pref_use_dithering"
-            android:title="@string/pref_use_dithering_title"
-            android:summary="@string/pref_use_dithering_summary" />
-
-        <CheckBoxPreference
-            android:key="pref_disable_bootanimation"
-            android:title="@string/pref_disable_bootanimation_title"
-            android:summary="@string/pref_disable_bootanimation_summary" />
-
-    </PreferenceCategory>
-
+    <PreferenceScreen
+        android:key="misc_tweaks"
+        android:title="@string/misc_tweaks_title"
+        android:summary="@string/misc_tweaks_summary">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.cyanogenmod.cmparts"
+            android:targetClass="com.cyanogenmod.cmparts.activities.MiscTweaksActivity" />
+    </PreferenceScreen>
+	
 </PreferenceScreen>

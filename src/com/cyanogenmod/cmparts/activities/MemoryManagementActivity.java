@@ -36,83 +36,45 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         OnPreferenceChangeListener {
 
     private static final String COMPCACHE_PREF = "pref_compcache_size";
-
     private static final String COMPCACHE_PERSIST_PROP = "persist.service.compcache";
-
     private static final String COMPCACHE_DEFAULT = SystemProperties.get("ro.compcache.default");
-
     private static final String PURGEABLE_ASSETS_PREF = "pref_purgeable_assets";
-
     private static final String PURGEABLE_ASSETS_PERSIST_PROP = "persist.sys.purgeable_assets";
-
     private static final String PURGEABLE_ASSETS_DEFAULT = "0";
-
     public static final String KSM_RUN_FILE = "/sys/kernel/mm/ksm/run";
-
     public static final String KSM_PREF = "pref_ksm";
-
     public static final String KSM_PREF_DISABLED = "0";
-
     public static final String KSM_PREF_ENABLED = "1";
-
     public static final String KSM_SLEEP_RUN_FILE = "/sys/kernel/mm/ksm/sleep_millisecs";
-
     public static final String KSM_SLEEP_PREF = "pref_ksm_sleep";
-
     private static final String KSM_SLEEP_PROP = "ksm_sleep_time";
-
     public static final String KSM_SLEEP_PREF_DEFAULT = "1500";
-
     public static final String KSM_SCAN_RUN_FILE = "/sys/kernel/mm/ksm/pages_to_scan";
-
     public static final String KSM_SCAN_PREF = "pref_ksm_scan";
-
     private static final String KSM_SCAN_PROP = "ksm_scan_time";
-
     public static final String KSM_SCAN_PREF_DEFAULT = "128";
-
     private static final String LOCK_HOME_PREF = "pref_lock_home";
-
     private static final String LOCK_MMS_PREF = "pref_lock_mms";
-
     private static final int LOCK_HOME_DEFAULT = 0;
-
     private static final int LOCK_MMS_DEFAULT = 0;
-
     private static final String SCROLLINGCACHE_PREF = "pref_scrollingcache";
-
     private static final String SCROLLINGCACHE_PERSIST_PROP = "persist.sys.scrollingcache";
-
     private static final String SCROLLINGCACHE_DEFAULT = "1";
-
     private static final String HEAPSIZE_PREF = "pref_heapsize";
-
     private static final String HEAPSIZE_PROP = "dalvik.vm.heapsize";
-
     private static final String HEAPSIZE_PERSIST_PROP = "persist.sys.vm.heapsize";
-
     private static final String HEAPSIZE_DEFAULT = "16m";
 
     private CheckBoxPreference mPurgeableAssetsPref;
-
     private CheckBoxPreference mKSMPref;
-
     private CheckBoxPreference mLockHomePref;
-
     private CheckBoxPreference mLockMmsPref;
-
     private ListPreference mCompcachePref;
-
     private ListPreference mKSMSleepPref;
-
     private ListPreference mKSMScanPref;
-
     private ListPreference mScrollingCachePref;
-
     private ListPreference mHeapsizePref;
-
     private int swapAvailable = -1;
-
     private int ksmAvailable = -1;
 
     @Override
@@ -301,4 +263,5 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         }
         return ksmAvailable > 0;
     }
+
 }

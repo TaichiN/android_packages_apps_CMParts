@@ -291,4 +291,5 @@ public class ProcessorActivity extends PreferenceActivity implements
             return "-";
         return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append(" MHz").toString();
     }
+
 }
