@@ -220,6 +220,12 @@
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activities.MemoryManagementKsmActivity"
+            android:label="@string/memory_management_ksm_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.MiscTweaksActivity"
             android:label="@string/misc_tweaks_title">
             <intent-filter>

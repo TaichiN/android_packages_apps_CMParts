@@ -18,7 +18,7 @@ package com.cyanogenmod.cmparts.intents;
 
 import com.cyanogenmod.cmparts.activities.ProcessorActivity;
 import com.cyanogenmod.cmparts.activities.IOSchedulerActivity;
-import com.cyanogenmod.cmparts.activities.MemoryManagementActivity;
+import com.cyanogenmod.cmparts.activities.MemoryManagementKsmActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -62,7 +62,7 @@ public class ProcessorReceiver extends BroadcastReceiver {
             SystemProperties.set(IOSCHED_SETTINGS_PROP, "false");
         }
 
-        if (ProcessorActivity.fileExists(MemoryManagementActivity.KSM_RUN_FILE)
+        if (ProcessorActivity.fileExists(MemoryManagementKsmActivity.KSM_RUN_FILE)
                 && intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
             SystemProperties.set(KSM_SETTINGS_PROP, "true");
             configureKSM(ctx);
@@ -121,7 +121,8 @@ public class ProcessorReceiver extends BroadcastReceiver {
         }
 
         String ioscheduler = prefs.getString(IOSchedulerActivity.IOSCHED_PREF, null);
-        String availableIOSchedulersLine = ProcessorActivity.readOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE);
+        String availableIOSchedulersLine = ProcessorActivity.readOneLine(
+                IOSchedulerActivity.IOSCHED_LIST_FILE);
         boolean noSettings = ((availableIOSchedulersLine == null) || (ioscheduler == null));
         List<String> ioschedulers = null;
 
@@ -129,7 +130,8 @@ public class ProcessorReceiver extends BroadcastReceiver {
             Log.d(TAG, "No I/O scheduler settings saved. Nothing to restore.");
         } else {
             if (availableIOSchedulersLine != null){
-                ioschedulers = Arrays.asList(availableIOSchedulersLine.replace("[", "").replace("]", "").split(" "));
+                ioschedulers = Arrays.asList(availableIOSchedulersLine.replace("[", "").replace(
+                        "]", "").split(" "));
             }
             if (ioscheduler != null && ioschedulers != null && ioschedulers.contains(ioscheduler)) {
                 ProcessorActivity.writeOneLine(IOSchedulerActivity.IOSCHED_LIST_FILE, ioscheduler);
@@ -141,12 +143,14 @@ public class ProcessorReceiver extends BroadcastReceiver {
     private void configureKSM(Context ctx) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
-        boolean ksm = prefs.getBoolean(MemoryManagementActivity.KSM_PREF, false);
-        ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_SLEEP_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SLEEP_PREF,
-                                 MemoryManagementActivity.KSM_SLEEP_PREF_DEFAULT));
-        ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_SCAN_RUN_FILE, prefs.getString(MemoryManagementActivity.KSM_SCAN_PREF,
-                                 MemoryManagementActivity.KSM_SCAN_PREF_DEFAULT));
-        ProcessorActivity.writeOneLine(MemoryManagementActivity.KSM_RUN_FILE, ksm ? "1" : "0");
+        boolean ksm = prefs.getBoolean(MemoryManagementKsmActivity.KSM_PREF, false);
+        ProcessorActivity.writeOneLine(MemoryManagementKsmActivity.KSM_SLEEP_RUN_FILE,
+                prefs.getString(MemoryManagementKsmActivity.KSM_SLEEP_PREF,
+                MemoryManagementKsmActivity.KSM_SLEEP_PREF_DEFAULT));
+        ProcessorActivity.writeOneLine(MemoryManagementKsmActivity.KSM_SCAN_RUN_FILE,
+                prefs.getString(MemoryManagementKsmActivity.KSM_SCAN_PREF,
+                MemoryManagementKsmActivity.KSM_SCAN_PREF_DEFAULT));
+        ProcessorActivity.writeOneLine(MemoryManagementKsmActivity.KSM_RUN_FILE, ksm ? "1" : "0");
         Log.d(TAG, "KSM settings restored.");
     }
 

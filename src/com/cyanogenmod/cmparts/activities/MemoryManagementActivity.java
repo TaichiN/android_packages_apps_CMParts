@@ -17,6 +17,7 @@
 package com.cyanogenmod.cmparts.activities;
 
 import com.cyanogenmod.cmparts.R;
+import com.cyanogenmod.cmparts.activities.MemoryManagementKsmActivity;
 
 import java.io.File;
 
@@ -41,18 +42,7 @@ public class MemoryManagementActivity extends PreferenceActivity implements
     private static final String PURGEABLE_ASSETS_PREF = "pref_purgeable_assets";
     private static final String PURGEABLE_ASSETS_PERSIST_PROP = "persist.sys.purgeable_assets";
     private static final String PURGEABLE_ASSETS_DEFAULT = "0";
-    public static final String KSM_RUN_FILE = "/sys/kernel/mm/ksm/run";
-    public static final String KSM_PREF = "pref_ksm";
-    public static final String KSM_PREF_DISABLED = "0";
-    public static final String KSM_PREF_ENABLED = "1";
-    public static final String KSM_SLEEP_RUN_FILE = "/sys/kernel/mm/ksm/sleep_millisecs";
-    public static final String KSM_SLEEP_PREF = "pref_ksm_sleep";
-    private static final String KSM_SLEEP_PROP = "ksm_sleep_time";
-    public static final String KSM_SLEEP_PREF_DEFAULT = "1500";
-    public static final String KSM_SCAN_RUN_FILE = "/sys/kernel/mm/ksm/pages_to_scan";
-    public static final String KSM_SCAN_PREF = "pref_ksm_scan";
-    private static final String KSM_SCAN_PROP = "ksm_scan_time";
-    public static final String KSM_SCAN_PREF_DEFAULT = "128";
+    private static final String KSM_PREF_SCREEN = "memory_management_ksm";
     private static final String LOCK_HOME_PREF = "pref_lock_home";
     private static final String LOCK_MMS_PREF = "pref_lock_mms";
     private static final int LOCK_HOME_DEFAULT = 0;
@@ -66,14 +56,12 @@ public class MemoryManagementActivity extends PreferenceActivity implements
     private static final String HEAPSIZE_DEFAULT = "16m";
 
     private CheckBoxPreference mPurgeableAssetsPref;
-    private CheckBoxPreference mKSMPref;
     private CheckBoxPreference mLockHomePref;
     private CheckBoxPreference mLockMmsPref;
     private ListPreference mCompcachePref;
-    private ListPreference mKSMSleepPref;
-    private ListPreference mKSMScanPref;
     private ListPreference mScrollingCachePref;
     private ListPreference mHeapsizePref;
+    private PreferenceScreen mKSMPrefScr;
     private int swapAvailable = -1;
     private int ksmAvailable = -1;
 
@@ -82,18 +70,13 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
 
         if (getPreferenceManager() != null) {
-
             addPreferencesFromResource(R.xml.memory_management);
-
             PreferenceScreen prefSet = getPreferenceScreen();
-
             String temp;
 
             mCompcachePref = (ListPreference) prefSet.findPreference(COMPCACHE_PREF);
             mPurgeableAssetsPref = (CheckBoxPreference) prefSet.findPreference(PURGEABLE_ASSETS_PREF);
-            mKSMPref = (CheckBoxPreference) prefSet.findPreference(KSM_PREF);
-            mKSMSleepPref = (ListPreference) prefSet.findPreference(KSM_SLEEP_PREF);
-            mKSMScanPref = (ListPreference) prefSet.findPreference(KSM_SCAN_PREF);
+            mKSMPrefScr = (PreferenceScreen) prefSet.findPreference(KSM_PREF_SCREEN);
             mLockHomePref = (CheckBoxPreference) prefSet.findPreference(LOCK_HOME_PREF);
             mLockMmsPref = (CheckBoxPreference) prefSet.findPreference(LOCK_MMS_PREF);
             mScrollingCachePref = (ListPreference) prefSet.findPreference(SCROLLINGCACHE_PREF);
@@ -112,26 +95,8 @@ public class MemoryManagementActivity extends PreferenceActivity implements
                     PURGEABLE_ASSETS_DEFAULT);
             mPurgeableAssetsPref.setChecked("1".equals(purgeableAssets));
 
-            if (isKsmAvailable()) {
-                mKSMPref.setChecked(KSM_PREF_ENABLED.equals(ProcessorActivity.readOneLine(KSM_RUN_FILE)));
-            } else {
-                prefSet.removePreference(mKSMPref);
-            }
-
-            if (isKsmAvailable()) {
-                temp = ProcessorActivity.readOneLine(KSM_SLEEP_RUN_FILE);
-                mKSMSleepPref.setValue(temp);
-                mKSMSleepPref.setOnPreferenceChangeListener(this);
-            } else {
-                prefSet.removePreference(mKSMSleepPref);
-            }
-
-            if (isKsmAvailable()) {
-                temp = ProcessorActivity.readOneLine(KSM_SCAN_RUN_FILE);
-                mKSMScanPref.setValue(temp);
-                mKSMScanPref.setOnPreferenceChangeListener(this);
-            } else {
-                prefSet.removePreference(mKSMScanPref);
+            if (!isKsmAvailable()) {
+                prefSet.removePreference(mKSMPrefScr);
             }
 
             mLockHomePref.setChecked(Settings.System.getInt(getContentResolver(),
@@ -151,40 +116,10 @@ public class MemoryManagementActivity extends PreferenceActivity implements
     }
 
     @Override
-    public void onResume() {
-        String temp;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        super.onResume();
-
-        if (isKsmAvailable()) {
-            temp = prefs.getString(KSM_SCAN_PREF, null);
-
-            if (temp == null) {
-                temp = ProcessorActivity.readOneLine(KSM_SCAN_RUN_FILE);
-                mKSMScanPref.setValue(temp);
-            }
-
-            temp = prefs.getString(KSM_SLEEP_PREF, null);
-
-            if (temp == null) {
-                temp = ProcessorActivity.readOneLine(KSM_SLEEP_RUN_FILE);
-                mKSMSleepPref.setValue(temp);
-            }
-        }
-    }
-
-    @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-
         if (preference == mPurgeableAssetsPref) {
             SystemProperties.set(PURGEABLE_ASSETS_PERSIST_PROP,
                     mPurgeableAssetsPref.isChecked() ? "1" : "0");
-            return true;
-        }
-
-        if (preference == mKSMPref) {
-            ProcessorActivity.writeOneLine(KSM_RUN_FILE, mKSMPref.isChecked() ? "1" : "0");
             return true;
         }
 
@@ -207,22 +142,6 @@ public class MemoryManagementActivity extends PreferenceActivity implements
         if (preference == mCompcachePref) {
             if (newValue != null) {
                 SystemProperties.set(COMPCACHE_PERSIST_PROP, (String) newValue);
-                return true;
-            }
-        }
-
-        if (preference == mKSMSleepPref) {
-            if (newValue != null) {
-                SystemProperties.set(KSM_SLEEP_PROP, (String)newValue);
-                ProcessorActivity.writeOneLine(KSM_SLEEP_RUN_FILE, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mKSMScanPref) {
-            if (newValue != null) {
-                SystemProperties.set(KSM_SCAN_PROP, (String)newValue);
-                ProcessorActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
                 return true;
             }
         }
@@ -259,7 +178,7 @@ public class MemoryManagementActivity extends PreferenceActivity implements
      */
     private boolean isKsmAvailable() {
         if (ksmAvailable < 0) {
-            ksmAvailable = new File(KSM_RUN_FILE).exists() ? 1 : 0;
+            ksmAvailable = new File(MemoryManagementKsmActivity.KSM_RUN_FILE).exists() ? 1 : 0;
         }
         return ksmAvailable > 0;
     }

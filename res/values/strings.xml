@@ -502,11 +502,13 @@
     <string name="pref_lock_mms_title">Lock messaging app in memory</string>
     <string name="pref_lock_mms_summary">Avoid lost messages on low memory situations</string>
     <!-- Performance Settings : Memory management : KSM -->
-    <string name="pref_ksm_title">Kernel samepage merging</string>
-    <string name="pref_ksm_summary">KSM reduces physical memory requirements and improves performance</string>
-    <string name="pref_ksm_sleep_title">KSM Sleep time</string>
+    <string name="memory_management_ksm_title">Kernel samepage merging</string>
+    <string name="memory_management_ksm_summary">Ksm reduces physical memory requirements and improves performance</string>
+    <string name="pref_ksm_title">Enable ksm</string>
+    <string name="pref_ksm_summary">Enable/Disable Kernel samepage merging</string>
+    <string name="pref_ksm_sleep_title">Sleep time</string>
     <string name="pref_ksm_sleep_summary">How many milliseconds ksmd should sleep before next scan</string>
-    <string name="pref_ksm_scan_title">KSM Pages to scan</string>
+    <string name="pref_ksm_scan_title">Pages to scan</string>
     <string name="pref_ksm_scan_summary">How many present pages to scan before ksmd goes to sleep</string>
     <!-- Performance Settings : Memory management : Scrolling Cache -->
     <string name="pref_scrollingcache_title">Scrolling cache</string>
