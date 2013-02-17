@@ -79,19 +79,37 @@ public class MemoryManagementActivity extends PreferenceActivity implements
 
     private static final int LOCK_MMS_DEFAULT = 0;
 
-    private ListPreference mCompcachePref;
+    private static final String SCROLLINGCACHE_PREF = "pref_scrollingcache";
+
+    private static final String SCROLLINGCACHE_PERSIST_PROP = "persist.sys.scrollingcache";
+
+    private static final String SCROLLINGCACHE_DEFAULT = "1";
+
+    private static final String HEAPSIZE_PREF = "pref_heapsize";
+
+    private static final String HEAPSIZE_PROP = "dalvik.vm.heapsize";
+
+    private static final String HEAPSIZE_PERSIST_PROP = "persist.sys.vm.heapsize";
+
+    private static final String HEAPSIZE_DEFAULT = "16m";
 
     private CheckBoxPreference mPurgeableAssetsPref;
 
     private CheckBoxPreference mKSMPref;
 
+    private CheckBoxPreference mLockHomePref;
+
+    private CheckBoxPreference mLockMmsPref;
+
+    private ListPreference mCompcachePref;
+
     private ListPreference mKSMSleepPref;
 
     private ListPreference mKSMScanPref;
 
-    private CheckBoxPreference mLockHomePref;
+    private ListPreference mScrollingCachePref;
 
-    private CheckBoxPreference mLockMmsPref;
+    private ListPreference mHeapsizePref;
 
     private int swapAvailable = -1;
 
@@ -116,6 +134,8 @@ public class MemoryManagementActivity extends PreferenceActivity implements
             mKSMScanPref = (ListPreference) prefSet.findPreference(KSM_SCAN_PREF);
             mLockHomePref = (CheckBoxPreference) prefSet.findPreference(LOCK_HOME_PREF);
             mLockMmsPref = (CheckBoxPreference) prefSet.findPreference(LOCK_MMS_PREF);
+            mScrollingCachePref = (ListPreference) prefSet.findPreference(SCROLLINGCACHE_PREF);
+            mHeapsizePref = (ListPreference) prefSet.findPreference(HEAPSIZE_PREF);
 
             if (isSwapAvailable()) {
                 if (SystemProperties.get(COMPCACHE_PERSIST_PROP) == "1")
@@ -157,6 +177,14 @@ public class MemoryManagementActivity extends PreferenceActivity implements
 
             mLockMmsPref.setChecked(Settings.System.getInt(getContentResolver(),
                     Settings.System.LOCK_MMS_IN_MEMORY, LOCK_MMS_DEFAULT) == 1);
+
+            mScrollingCachePref.setValue(SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP,
+                    SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP, SCROLLINGCACHE_DEFAULT)));
+            mScrollingCachePref.setOnPreferenceChangeListener(this);
+
+            mHeapsizePref.setValue(SystemProperties.get(HEAPSIZE_PERSIST_PROP,
+                    SystemProperties.get(HEAPSIZE_PROP, HEAPSIZE_DEFAULT)));
+            mHeapsizePref.setOnPreferenceChangeListener(this);
         }
     }
 
@@ -233,6 +261,20 @@ public class MemoryManagementActivity extends PreferenceActivity implements
             if (newValue != null) {
                 SystemProperties.set(KSM_SCAN_PROP, (String)newValue);
                 ProcessorActivity.writeOneLine(KSM_SCAN_RUN_FILE, (String)newValue);
+                return true;
+            }
+        }
+
+        if (preference == mScrollingCachePref) {
+            if (newValue != null) {
+                SystemProperties.set(SCROLLINGCACHE_PERSIST_PROP, (String)newValue);
+                return true;
+            }
+        }
+
+        if (preference == mHeapsizePref) {
+            if (newValue != null) {
+                SystemProperties.set(HEAPSIZE_PERSIST_PROP, (String)newValue);
                 return true;
             }
         }

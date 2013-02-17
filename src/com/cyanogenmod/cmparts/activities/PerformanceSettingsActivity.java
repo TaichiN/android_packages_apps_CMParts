@@ -36,7 +36,7 @@ import java.io.File;
 /**
  * Performance Settings
  */
-public class PerformanceSettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class PerformanceSettingsActivity extends PreferenceActivity {
 
      private static final String GENERAL_CATEGORY = "general_category";
 
@@ -50,14 +50,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private static final String JIT_PROP = "dalvik.vm.execution-mode";
 
-    private static final String HEAPSIZE_PREF = "pref_heapsize";
-
-    private static final String HEAPSIZE_PROP = "dalvik.vm.heapsize";
-
-    private static final String HEAPSIZE_PERSIST_PROP = "persist.sys.vm.heapsize";
-
-    private static final String HEAPSIZE_DEFAULT = "16m";
-
     private static final String USE_DITHERING_PREF = "pref_use_dithering";
 
     private static final String USE_DITHERING_PERSIST_PROP = "persist.sys.use_dithering";
@@ -67,12 +59,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
     private static final String USE_16BPP_ALPHA_PREF = "pref_use_16bpp_alpha";
 
     private static final String USE_16BPP_ALPHA_PROP = "persist.sys.use_16bpp_alpha";
-
-    private static final String SCROLLINGCACHE_PREF = "pref_scrollingcache";
-
-    private static final String SCROLLINGCACHE_PERSIST_PROP = "persist.sys.scrollingcache";
-
-    private static final String SCROLLINGCACHE_DEFAULT = "1";
 
     private static final String DISABLE_BOOTANIMATION_PREF = "pref_disable_bootanimation";
 
@@ -86,11 +72,7 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
 
     private CheckBoxPreference mUse16bppAlphaPref;
 
-    private ListPreference mScrollingCachePref;
-
     private CheckBoxPreference mDisableBootanimPref;
-
-    private ListPreference mHeapsizePref;
 
     private AlertDialog alertDialog;
 
@@ -119,16 +101,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
         mUse16bppAlphaPref = (CheckBoxPreference) prefSet.findPreference(USE_16BPP_ALPHA_PREF);
         String use16bppAlpha = SystemProperties.get(USE_16BPP_ALPHA_PROP, "0");
         mUse16bppAlphaPref.setChecked("1".equals(use16bppAlpha));
-
-        mScrollingCachePref = (ListPreference) prefSet.findPreference(SCROLLINGCACHE_PREF);
-        mScrollingCachePref.setValue(SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP,
-                SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP, SCROLLINGCACHE_DEFAULT)));
-        mScrollingCachePref.setOnPreferenceChangeListener(this);
-
-        mHeapsizePref = (ListPreference) prefSet.findPreference(HEAPSIZE_PREF);
-        mHeapsizePref.setValue(SystemProperties.get(HEAPSIZE_PERSIST_PROP,
-                SystemProperties.get(HEAPSIZE_PROP, HEAPSIZE_DEFAULT)));
-        mHeapsizePref.setOnPreferenceChangeListener(this);
 
         mDisableBootanimPref = (CheckBoxPreference) prefSet.findPreference(DISABLE_BOOTANIMATION_PREF);
         String disableBootanimation = SystemProperties.get(DISABLE_BOOTANIMATION_PERSIST_PROP, DISABLE_BOOTANIMATION_DEFAULT);
@@ -173,24 +145,6 @@ public class PerformanceSettingsActivity extends PreferenceActivity implements P
             SystemProperties.set(DISABLE_BOOTANIMATION_PERSIST_PROP,
                     mDisableBootanimPref.isChecked() ? "1" : "0");
             return true;
-        }
-
-        return false;
-    }
-
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mScrollingCachePref) {
-            if (newValue != null) {
-                SystemProperties.set(SCROLLINGCACHE_PERSIST_PROP, (String)newValue);
-                return true;
-            }
-        }
-
-        if (preference == mHeapsizePref) {
-            if (newValue != null) {
-                SystemProperties.set(HEAPSIZE_PERSIST_PROP, (String)newValue);
-                return true;
-            }
         }
 
         return false;
