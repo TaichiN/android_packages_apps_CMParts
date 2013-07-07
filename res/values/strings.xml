@@ -521,20 +521,16 @@
     <string name="pref_heapsize_title">VM heap size</string>
     <string name="pref_heapsize_summary">Maximum amount of memory per VM heap (requires reboot)</string>
 
-    <!-- Performance Settings : Misc tweaks title -->
-    <string name="misc_tweaks_title">Miscellaneous tweaks</string>
-    <!-- Performance Settings : Misc tweaks summary -->
-    <string name="misc_tweaks_summary">Change misc settings to improve system performance</string>
-    <!-- Performance Settings : Misc tweaks : JIT Mode -->
+    <!-- Performance Settings : JIT Mode -->
     <string name="pref_jit_mode_title">Use JIT</string>
     <string name="pref_jit_mode_summary">Use the Dalvik just-in-time compiler (requires reboot)</string>
-    <!-- Performance Settings : Misc tweaks : Dithering -->
+    <!-- Performance Settings : Dithering -->
     <string name="pref_use_dithering_title">Enable surface dithering</string>
     <string name="pref_use_dithering_summary">Dithering surfaces improves image quality at the cost of performance (requires reboot)</string>
-    <!-- Performance Settings : Misc tweaks : 16bpp Alpha -->
+    <!-- Performance Settings : 16bpp Alpha -->
     <string name="pref_use_16bpp_alpha_title">Use 16bit transparency</string>
     <string name="pref_use_16bpp_alpha_summary">Using 16bit transparency can improve scrolling performance, but may cause visual artifacts (requires reboot)</string>
-    <!-- Performance Settings : Misc tweaks : Disable bootanimation -->
+    <!-- Performance Settings : Disable bootanimation -->
     <string name="pref_disable_bootanimation_title">Disable boot animation</string>
     <string name="pref_disable_bootanimation_summary">Don\'t show the boot animation for faster boot</string>
 
